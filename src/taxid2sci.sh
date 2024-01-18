@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## Fetch scientific name for Genbank taxonomy ID
-## Version: Fri 23 Feb 2018 02:08:32 PM CET
-## By: Johan.Nylander@nbis.se
+## Last modified: tor jan 18, 2024  04:59
+## By: Johan.Nylander@nrm.se
 ## Usage: ./taxid2sci.sh infile-with-taxids
 ## Note: No detailed error checking! If any of the taxids
 ##       provided as queries are incorrect, the script will
@@ -16,9 +16,9 @@ set -euo pipefail
 #name_of_script='taxid2sci'
 #econtact -email ${author_email_address} -tool ${name_of_script}
 
-xargs -n 200 <${1:-/dev/stdin} | tr ' ' ',' |\
+xargs -n 200 <${1:-/dev/stdin} | tr ' ' ',' | \
     xargs -n 1 sh -c '
-    epost -db taxonomy -id "$0" |\
-        efetch -format docsum |\
-        xtract -pattern DocumentSummary -element TaxId,Rank,ScientificName'
+      epost -db taxonomy -id "$0" | \
+        efetch -format docsum | \
+          xtract -pattern DocumentSummary -element TaxId,Rank,ScientificName'
 
