@@ -1,6 +1,6 @@
 # Scientific Name \<=\> Genbank Taxon ID
 
-- Last modified: mån jan 22, 2024  09:32
+- Last modified: mån jan 22, 2024  10:52
 - Sign: Johan Nylander
 
 ## taxid2sci.sh, sci2taxid.sh
@@ -50,7 +50,7 @@ output.
 ### Requirements
 
 - Internet connection
-- [Entrez Direct suite of software](https://www.ncbi.nlm.nih.gov/books/NBK179288/)
+- Entrez Direct suite of software (<https://www.ncbi.nlm.nih.gov/books/NBK179288/>)
 
 ---
 
