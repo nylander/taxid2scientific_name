@@ -2,7 +2,6 @@
 #===============================================================================
 =pod
 
-
 =head2
 
          FILE: taxid2lineage.pl
@@ -11,19 +10,19 @@
 
   DESCRIPTION: Print NCBI taxonomic lineage given Genbank taxids
 
-      OPTIONS: ---
+      OPTIONS: -h, --help
 
- REQUIREMENTS: ---
+ REQUIREMENTS: BioPerl modules Bio::DB::Taxonomy, Bio::Tree::Tree
 
          BUGS: ---
 
-        NOTES: ---
+        NOTES: Queries NCBI one taxid at the time. Slow!
 
        AUTHOR: Johan Nylander
 
       COMPANY: NRM
 
-      VERSION: 1.0
+      VERSION: 0.1
 
       CREATED: 02/23/2018 09:57:06 AM
 
@@ -31,27 +30,19 @@
 
 =cut
 
-
 #===============================================================================
 
 use strict;
 use warnings;
-use Data::Dumper;
 use Bio::DB::Taxonomy;
 use Bio::Tree::Tree;
-#use Getopt::Long;
+use Getopt::Long;
 
-#exec("perldoc", $0) unless (@ARGV);
+exec("perldoc", $0) unless (@ARGV);
 
-#my $infile  = q{};
-#my $outfile = q{};
-#my $VERBOSE = 0;
-#GetOptions(
-#    "infile=s"  => \$infile,
-#    "outfile=s" => \$outfile,
-#    "verbose!"  => \$VERBOSE,
-#    "help"      => sub { exec("perldoc", $0); exit(0); },
-#);
+GetOptions(
+    "h|help" => sub { exec("perldoc", $0); exit(0); },
+);
 
 my $dbh = Bio::DB::Taxonomy->new(-source => 'entrez');
 my $tree_functions = Bio::Tree::Tree->new();
@@ -59,11 +50,13 @@ my $tree_functions = Bio::Tree::Tree->new();
 while (<>) {
     chomp;
     my $taxid = $_;
-    print "taxid:", $taxid, "\t"; 
     my $h = $dbh->get_taxon(-taxonid => "$taxid");
-    #my $lineage = $tree_functions->get_lineage_string($h);
-    #print $lineage, "\n";
-    #print STDERR "rank is ", $h->rank, "\n";
+    if ($h) {
+        print "taxid:", $taxid, "\t";
+    }
+    else {
+        next;
+    }
     my @lineage = $tree_functions->get_lineage_nodes($h);
     foreach my $l (@lineage) {
         if (defined($l->rank)) {

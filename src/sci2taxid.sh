@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Fetch Genbank taxonomy ID for scientific name.
-## Last modified: tor jan 18, 2024  04:40
+## Last modified: mån jan 22, 2024  09:00
 ## By: Johan.Nylander@nrm.se
 ## Usage: ./sci2taxid.sh infile-with-scientific-names
 ## Note: No detailed error checking! If any of the scientific names
@@ -26,6 +26,6 @@ while read org ; do
   fi
   esearch -db taxonomy -query "$org [Scientific Name]" < /dev/null | \
     efetch -format docsum | \
-      xtract -pattern DocumentSummary -element TaxId,ScientificName
+      xtract -pattern DocumentSummary -element TaxId,Rank,ScientificName
 done <${1:-/dev/stdin}
 
