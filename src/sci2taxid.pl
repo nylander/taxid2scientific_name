@@ -3,7 +3,7 @@
 # Usage: sci2taxid.pl [-v][-h] taxids
 #
 # Copyright (C) 2024 nylander <johan.nylander@nrm.se>
-# Last mdified: mån 22 jan 2024 10:36:52
+# Last modified: mån apr 22, 2024  12:36
 
 use strict;
 use warnings;
@@ -32,7 +32,6 @@ while (<>) {
         warn "caught error: $_";
     };
     $string =~ s/\[$//; # workaround for BioPerl bug
-    print STDERR "string: \'$string\'\n";
     if (@taxonids) {
         print "$taxonids[0]\t$string\n";
     }
