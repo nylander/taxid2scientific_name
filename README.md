@@ -1,33 +1,28 @@
-# Scientific Name \<=\> Genbank Taxon ID
+# Scientific name \<=\> Taxon ID
 
-- Last modified: mån jan 22, 2024  10:52
-- Sign: Johan Nylander
+Several variants on the same theme: get taxon ID from taxon name or the other
+way around.
+
+All scripts requires an internet accession and access to specific databases
+([Genbank Taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy) or [ENA
+Taxonomy](https://www.ebi.ac.uk/ena/taxonomy/rest/swagger-ui/index.html)).
 
 ## taxid2sci.sh, sci2taxid.sh
 
-### Description
-
 Get scientific name from Genbank taxon ID - or the other way around.
 
-### Input
+**Input:** File with taxids/scientific names
 
-File with taxids/scientific names
+**Output:** Writes TaxID, rank, and taxon name to stdout.
 
-### Output
+**Notes:** The script `taxid2sci.sh` sends and retrieves queries in batches.  Output order
+  can be different than input order!  To ensure the same input/output order, use
+  sorting (see Examples).
+  If the query cannot be found in [NCBI
+  Taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy), it is silently ignored in
+  output.
 
-Writes TaxID, rank, and taxon name to stdout.
-
-### Notes
-
-The script `taxid2sci.sh` sends and retrieves queries in batches.  Output order
-can be different than input order!  To ensure the same input/output order, use
-sorting (see Examples).
-
-If the query cannot be found in [NCBI
-Taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy), it is silently ignored in
-output.
-
-### Examples
+**Examples:**
 
     $ ./src/taxid2sci.sh data/taxids.txt
     3055	species	Chlamydomonas reinhardtii
@@ -47,32 +42,22 @@ output.
     3047	species	Dunaliella tertiolecta
     3046	species	Dunaliella salina
 
-### Requirements
+**Requirements:**
 
 - Internet connection
 - Entrez Direct suite of software (<https://www.ncbi.nlm.nih.gov/books/NBK179288/>)
 
----
-
 ## taxid2lineage.pl
-
-### Description
 
 Get full taxonomic lineage from Genbank taxon ID.
 
-### Input
+**Input:** File with taxids
 
-File with taxids
+**Output:** Writes taxon lineage with ranks to stdout.
 
-### Output
+**Notes:** Sends and retrieves queries one by one (slow).
 
-Writes taxon lineage with ranks to stdout.
-
-### Notes
-
-Sends and retrieves queries one by one (slow).
-
-### Examples
+**Examples:**
 
     $ ./src/taxid2lineage.pl data/taxids.txt
     taxid:3046	no_rank:cellular organisms	superkingdom:Eukaryota	kingdom:Viridiplantae	phylum:Chlorophyta	clade:core chlorophytes	class:Chlorophyceae	clade:CS clade	order:Chlamydomonadales	family:Dunaliellaceae	genus:Dunaliella
@@ -86,11 +71,35 @@ Sends and retrieves queries one by one (slow).
     Chlorophyta	core chlorophytes	Chlorophyceae	CS clade	Chlamydomonadales	Chlamydomonadaceae	
     Chlorophyta	core chlorophytes	Chlorophyceae	CS clade	Chlamydomonadales	Chlamydomonadaceae	Chlamydomonas
 
-### Requirements
+**Requirements:**
 
 - Internet connection
 - Perl
 - [BioPerl](https://bioperl.org) modules `Bio::DB::Taxonomy` and
-  `Bio::Tree::Tree`.
+    `Bio::Tree::Tree`.
 
+## ask\_ena\_for\_taxid.py, ask\_ena\_for\_taxon.py
+
+Query the [ENA taxonomy
+database](https://www.ebi.ac.uk/ena/taxonomy/rest/swagger-ui/index.html) for
+either taxId or taxon.
+
+**Input:** string (with either taxId or taxon)
+
+**Output:** writes to stdout (either taxId or taxon)
+
+**Notes:** Binomen as argument needs to be quoted (e.g. 'Homo sapiens')
+
+**Examples:**
+
+    $ ./src/ask_ena_for_taxid.py 'Dunaliella salina'
+    3046
+    $ ./src/ask_ena_for_taxon.py 3046
+    Dunaliella salina
+
+**Requirements:**
+
+- Internet connection
+- Python
+- Python modules `json` and `requests`
 
